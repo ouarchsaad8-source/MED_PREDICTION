@@ -1,0 +1,133 @@
+<div class="prediction-container fade-in">
+  <div class="prediction-header">
+    <h1>Medical Prediction</h1>
+    <p class="prediction-subtitle">Enter your symptoms and get AI-powered medical insights</p>
+  </div>
+
+  <div class="prediction-content" *ngIf="!showResults">
+    <form [formGroup]="predictionForm" (ngSubmit)="onSubmit()" class="prediction-form">
+      <!-- Symptoms Selection -->
+      <div class="form-section">
+        <h3>Select Symptoms</h3>
+        <p class="section-description">Choose all symptoms you are experiencing</p>
+        
+        <div class="symptoms-grid">
+          <div *ngFor="let category of getUniqueCategories()" class="symptom-category">
+            <h4 class="category-title">{{ category }}</h4>
+            <div class="symptom-tags">
+              <button
+                *ngFor="let symptom of getSymptomsByCategory(category)"
+                type="button"
+                class="symptom-tag"
+                [class.selected]="isSymptomSelected(symptom.id)"
+                (click)="toggleSymptom(symptom.id)">
+                {{ symptom.name }}
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="error-message" *ngIf="predictionForm.get('symptoms')?.invalid && predictionForm.get('symptoms')?.touched">
+          Please select at least one symptom
+        </div>
+      </div>
+
+      <!-- Case Description -->
+      <div class="form-section">
+        <div class="form-group">
+          <label class="form-label" for="description">Case Description *</label>
+          <textarea 
+            id="description"
+            class="form-control"
+            formControlName="description"
+            rows="4"
+            placeholder="Describe your symptoms in detail, including when they started, how they feel, and any other relevant information..."
+            [class.error]="predictionForm.get('description')?.invalid && predictionForm.get('description')?.touched">
+          </textarea>
+          <div class="error-message" *ngIf="predictionForm.get('description')?.invalid && predictionForm.get('description')?.touched">
+            <span *ngIf="predictionForm.get('description')?.errors?.['required']">Description is required</span>
+            <span *ngIf="predictionForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onset Date and Severity -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="onsetDate">Onset Date *</label>
+          <input 
+            type="date" 
+            id="onsetDate"
+            class="form-control"
+            formControlName="onsetDate"
+            [class.error]="predictionForm.get('onsetDate')?.invalid && predictionForm.get('onsetDate')?.touched">
+          <div class="error-message" *ngIf="predictionForm.get('onsetDate')?.invalid && predictionForm.get('onsetDate')?.touched">
+            <span *ngIf="predictionForm.get('onsetDate')?.errors?.['required']">Onset date is required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="severity">Severity Level: {{ severityValue }}/10</label>
+          <div class="severity-slider">
+            <input 
+              type="range" 
+              id="severity"
+              class="slider"
+              formControlName="severity"
+              min="1" 
+              max="10" 
+              [value]="severityValue"
+              (input)="onSeverityChange($event)">
+            <div class="slider-labels">
+              <span>Mild (1)</span>
+              <span>Moderate (5)</span>
+              <span>Severe (10)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="resetForm()">
+          Reset Form
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="predictionForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner"></span>
+          <svg *ngIf="!isLoading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path>
+            <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path>
+          </svg>
+          <span *ngIf="!isLoading">Get AI Prediction</span>
+          <span *ngIf="isLoading">Analyzing...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="loading-content">
+      <div class="loading-spinner">
+        <div class="spinner-large"></div>
+      </div>
+      <h3>Analyzing Your Symptoms</h3>
+      <p>Our AI is processing your information to provide accurate medical insights...</p>
+      <div class="loading-steps">
+        <div class="step active">Processing symptoms</div>
+        <div class="step active">Analyzing patterns</div>
+        <div class="step">Generating predictions</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <app-prediction-results 
+    *ngIf="showResults && predictionResults"
+    [results]="predictionResults"
+    (newPrediction)="resetForm()">
+  </app-prediction-results>
+</div>

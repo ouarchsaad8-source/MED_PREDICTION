@@ -1,0 +1,9 @@
+// Import shared auth styles
+@import '../login/login.component.scss';
+
+// Register-specific overrides if needed
+.auth-form {
+  .form-group {
+    margin-bottom: 1.25rem; // Slightly tighter spacing for more fields
+  }
+}

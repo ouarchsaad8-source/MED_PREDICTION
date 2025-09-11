@@ -1,0 +1,146 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+  
+  h1 {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.dashboard-content {
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    
+    h2 {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+}
+
+.predictions-list {
+  .prediction-item {
+    margin-bottom: 1rem;
+    transition: var(--transition);
+    
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+  
+  .prediction-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .prediction-info {
+    flex: 1;
+    
+    .prediction-date {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .prediction-result {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+  }
+  
+  .prediction-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    
+    &.status-completed {
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--success);
+    }
+    
+    &.status-pending {
+      background: rgba(243, 156, 18, 0.1);
+      color: var(--warning);
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-secondary);
+  
+  .empty-icon {
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .prediction-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .prediction-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

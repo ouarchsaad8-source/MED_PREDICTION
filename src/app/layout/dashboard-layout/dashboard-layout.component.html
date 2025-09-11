@@ -1,0 +1,19 @@
+<div class="dashboard-layout">
+  <app-navbar 
+    [currentUser]="currentUser"
+    (toggleSidebar)="toggleSidebar()"
+    (logout)="logout()">
+  </app-navbar>
+  
+  <div class="dashboard-content">
+    <app-sidebar 
+      [isCollapsed]="isSidebarCollapsed">
+    </app-sidebar>
+    
+    <main class="main-content" [class.sidebar-collapsed]="isSidebarCollapsed">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>

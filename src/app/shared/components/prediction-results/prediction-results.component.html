@@ -1,0 +1,131 @@
+<div class="results-container fade-in">
+  <div class="results-header">
+    <h2>AI Prediction Results</h2>
+    <p class="results-timestamp">Generated on {{ formatDate(results.timestamp) }}</p>
+  </div>
+
+  <!-- Input Summary -->
+  <div class="input-summary card">
+    <h3>Input Summary</h3>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <label>Symptoms</label>
+        <div class="symptom-list">
+          <span *ngFor="let symptom of results.symptoms" class="symptom-badge">{{ symptom }}</span>
+        </div>
+      </div>
+      <div class="summary-item">
+        <label>Onset Date</label>
+        <span>{{ results.onsetDate | date:'MMM dd, yyyy' }}</span>
+      </div>
+      <div class="summary-item">
+        <label>Severity Level</label>
+        <div class="severity-display">
+          <span class="severity-value">{{ results.severity }}/10</span>
+          <div class="severity-bar">
+            <div class="severity-fill" [style.width.%]="results.severity * 10"></div>
+          </div>
+        </div>
+      </div>
+      <div class="summary-item full-width">
+        <label>Description</label>
+        <p>{{ results.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disease Predictions -->
+  <div class="predictions-section">
+    <h3>Possible Conditions</h3>
+    <div class="diseases-list">
+      <div 
+        *ngFor="let disease of results.diseases; let i = index" 
+        class="disease-card card"
+        [class.expanded]="isDiseaseExpanded(i)">
+        
+        <div class="disease-header" (click)="toggleDiseaseExpansion(i)">
+          <div class="disease-info">
+            <h4>{{ disease.name }}</h4>
+            <p class="disease-reason">{{ disease.reason }}</p>
+          </div>
+          <div class="disease-probability">
+            <div class="probability-circle" [class]="getProbabilityColor(disease.probability)">
+              <span>{{ disease.probability }}%</span>
+            </div>
+            <svg class="expand-icon" [class.rotated]="isDiseaseExpanded(i)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+          </div>
+        </div>
+
+        <div class="disease-details" *ngIf="isDiseaseExpanded(i)">
+          <div class="medications-section">
+            <h5>Recommended Medications</h5>
+            <div class="medications-list">
+              <div *ngFor="let medication of disease.medications" class="medication-item">
+                <div class="medication-header">
+                  <span class="medication-name">{{ medication.name }}</span>
+                  <span class="medication-dose">{{ medication.dose }} - {{ medication.frequency }}</span>
+                </div>
+                <p class="medication-reason">{{ medication.reason }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="results-actions">
+    <div class="action-buttons">
+      <button class="btn btn-outline" (click)="onSaveReport()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+          <polyline points="17,21 17,13 7,13 7,21"></polyline>
+          <polyline points="7,3 7,8 15,8"></polyline>
+        </svg>
+        Save to Report
+      </button>
+      
+      <button class="btn btn-outline" (click)="onDownloadPDF()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7,10 12,15 17,10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download PDF
+      </button>
+      
+      <button class="btn btn-outline" (click)="onViewFullDetails()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        View Full Details
+      </button>
+    </div>
+    
+    <button class="btn btn-primary" (click)="onNewPrediction()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      New Prediction
+    </button>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <div class="disclaimer-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </div>
+    <div class="disclaimer-text">
+      <strong>Medical Disclaimer:</strong> This AI prediction is for informational purposes only and should not replace professional medical advice. Always consult with a qualified healthcare provider for proper diagnosis and treatment.
+    </div>
+  </div>
+</div>

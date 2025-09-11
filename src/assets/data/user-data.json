@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Dr. Sarah Johnson",
+      "email": "sarah.johnson@medprediction.com",
+      "age": 34,
+      "gender": "Female",
+      "contact": "+1 (555) 123-4567",
+      "specialization": "Internal Medicine",
+      "experience": "8 years",
+      "avatar": "assets/images/default-avatar.svg",
+      "preferences": {
+        "emailNotifications": true,
+        "smsAlerts": false,
+        "dataSharing": true
+      },
+      "statistics": {
+        "predictionsThisMonth": 24,
+        "confirmedDiagnoses": 18,
+        "savedReports": 12
+      }
+    }
+  ],
+  "symptoms": [
+    {
+      "id": "fever",
+      "name": "Fever",
+      "category": "General",
+      "description": "Elevated body temperature above normal range"
+    },
+    {
+      "id": "headache",
+      "name": "Headache",
+      "category": "Neurological",
+      "description": "Pain in the head or upper neck"
+    },
+    {
+      "id": "cough",
+      "name": "Cough",
+      "category": "Respiratory",
+      "description": "Sudden expulsion of air from the lungs"
+    },
+    {
+      "id": "shortness_breath",
+      "name": "Shortness of breath",
+      "category": "Respiratory",
+      "description": "Difficulty breathing or feeling breathless"
+    },
+    {
+      "id": "chest_pain",
+      "name": "Chest pain",
+      "category": "Cardiovascular",
+      "description": "Pain or discomfort in the chest area"
+    },
+    {
+      "id": "nausea",
+      "name": "Nausea",
+      "category": "Gastrointestinal",
+      "description": "Feeling of sickness with inclination to vomit"
+    },
+    {
+      "id": "vomiting",
+      "name": "Vomiting",
+      "category": "Gastrointestinal",
+      "description": "Forceful expulsion of stomach contents"
+    },
+    {
+      "id": "diarrhea",
+      "name": "Diarrhea",
+      "category": "Gastrointestinal",
+      "description": "Loose or watery bowel movements"
+    },
+    {
+      "id": "fatigue",
+      "name": "Fatigue",
+      "category": "General",
+      "description": "Extreme tiredness or lack of energy"
+    },
+    {
+      "id": "muscle_pain",
+      "name": "Muscle pain",
+      "category": "Musculoskeletal",
+      "description": "Pain or aching in muscles"
+    },
+    {
+      "id": "joint_pain",
+      "name": "Joint pain",
+      "category": "Musculoskeletal",
+      "description": "Pain in joints or connective tissues"
+    },
+    {
+      "id": "rash",
+      "name": "Skin rash",
+      "category": "Dermatological",
+      "description": "Changes in skin color, texture, or appearance"
+    },
+    {
+      "id": "dizziness",
+      "name": "Dizziness",
+      "category": "Neurological",
+      "description": "Feeling unsteady or lightheaded"
+    },
+    {
+      "id": "sore_throat",
+      "name": "Sore throat",
+      "category": "Respiratory",
+      "description": "Pain or irritation in the throat"
+    }
+  ]
+}

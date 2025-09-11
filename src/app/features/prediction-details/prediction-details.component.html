@@ -1,0 +1,172 @@
+<div class="prediction-details-container fade-in" *ngIf="!isLoading && prediction">
+  <div class="details-header">
+    <div class="header-left">
+      <button class="btn btn-outline btn-sm" (click)="goBack()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
+        Back to Dashboard
+      </button>
+      <div class="header-info">
+        <h1>Prediction Details</h1>
+        <p class="prediction-date">{{ formatDate(prediction.timestamp) }}</p>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <button class="btn btn-outline btn-sm" (click)="downloadReport()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7,10 12,15 17,10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download Report
+      </button>
+      <button class="btn btn-outline btn-sm" (click)="editPrediction()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+        Edit
+      </button>
+      <button class="btn btn-outline btn-sm text-danger" (click)="deletePrediction()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3,6 5,6 21,6"></polyline>
+          <path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"></path>
+        </svg>
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <div class="details-content">
+    <!-- Patient Input Section -->
+    <div class="section-card card">
+      <h3>Patient Input</h3>
+      <div class="input-details">
+        <div class="detail-row">
+          <div class="detail-item">
+            <label>Symptoms</label>
+            <div class="symptom-list">
+              <span *ngFor="let symptom of prediction.symptoms" class="symptom-badge">{{ symptom }}</span>
+            </div>
+          </div>
+          <div class="detail-item">
+            <label>Onset Date</label>
+            <span>{{ prediction.onsetDate | date:'MMM dd, yyyy' }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Severity Level</label>
+            <div class="severity-display">
+              <span class="severity-value">{{ prediction.severity }}/10</span>
+              <div class="severity-bar">
+                <div class="severity-fill" [style.width.%]="prediction.severity * 10"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detail-item full-width">
+          <label>Description</label>
+          <div class="description-text">{{ prediction.description }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Analysis Results -->
+    <div class="section-card card">
+      <h3>AI Analysis Results</h3>
+      <div class="diseases-analysis">
+        <div *ngFor="let disease of prediction.diseases; let i = index" class="disease-result">
+          <div class="disease-header">
+            <div class="disease-info">
+              <h4>{{ disease.name }}</h4>
+              <p class="disease-reason">{{ disease.reason }}</p>
+            </div>
+            <div class="probability-display">
+              <div class="probability-circle" [class]="getProbabilityColor(disease.probability)">
+                <span>{{ disease.probability }}%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="medications-section">
+            <h5>Recommended Treatment</h5>
+            <div class="medications-grid">
+              <div *ngFor="let medication of disease.medications" class="medication-card">
+                <div class="medication-info">
+                  <div class="medication-name">{{ medication.name }}</div>
+                  <div class="medication-dosage">{{ medication.dose }} - {{ medication.frequency }}</div>
+                </div>
+                <div class="medication-reason">{{ medication.reason }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Notes -->
+    <div class="section-card card" *ngIf="prediction.notes">
+      <h3>Clinical Notes</h3>
+      <div class="notes-content">
+        <p>{{ prediction.notes }}</p>
+      </div>
+    </div>
+
+    <!-- Status and Timeline -->
+    <div class="section-card card">
+      <h3>Status & Timeline</h3>
+      <div class="status-timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker active"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">Prediction Created</div>
+            <div class="timeline-date">{{ formatDate(prediction.timestamp) }}</div>
+            <div class="timeline-description">AI analysis completed with {{ prediction.diseases.length }} possible conditions identified</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-marker" [class.active]="prediction.status === 'completed'"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">Status: {{ prediction.status | titlecase }}</div>
+            <div class="timeline-description" *ngIf="prediction.status === 'completed'">
+              Analysis reviewed and documented
+            </div>
+            <div class="timeline-description" *ngIf="prediction.status === 'pending'">
+              Awaiting medical professional review
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="isLoading">
+  <div class="loading-content">
+    <div class="spinner-large"></div>
+    <h3>Loading Prediction Details</h3>
+    <p>Please wait while we retrieve the information...</p>
+  </div>
+</div>
+
+<!-- Not Found State -->
+<div class="not-found-container" *ngIf="!isLoading && !prediction">
+  <div class="not-found-content">
+    <div class="not-found-icon">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </div>
+    <h3>Prediction Not Found</h3>
+    <p>The requested prediction could not be found or may have been deleted.</p>
+    <button class="btn btn-primary" (click)="goBack()">
+      Return to Dashboard
+    </button>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+<div class="help-container fade-in">
+  <div class="help-header">
+    <h1>Help & Support</h1>
+    <p class="help-subtitle">Find answers to common questions and get support</p>
+  </div>
+
+  <div class="help-content">
+    <!-- Quick Start Guide -->
+    <div class="section-card card">
+      <h3>Quick Start Guide</h3>
+      <div class="guide-steps">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Select Symptoms</h4>
+            <p>Choose from our comprehensive symptom database or describe your symptoms in detail</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Provide Details</h4>
+            <p>Add case description, onset date, and severity level for more accurate predictions</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Get AI Analysis</h4>
+            <p>Receive ranked predictions with probability scores and medication recommendations</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Save & Share</h4>
+            <p>Save results to your profile, download reports, or share with healthcare providers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="section-card card">
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq-list">
+        <div *ngFor="let faq of faqItems; let i = index" class="faq-item">
+          <div class="faq-question" (click)="toggleFAQ(i)">
+            <span>{{ faq.question }}</span>
+            <svg class="faq-icon" [class.rotated]="faq.expanded" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+          </div>
+          <div class="faq-answer" [class.expanded]="faq.expanded">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="section-card card">
+      <h3>Contact Support</h3>
+      <p class="contact-description">Need additional help? Our support team is here to assist you.</p>
+      
+      <div class="contact-grid">
+        <div *ngFor="let contact of contactInfo" class="contact-item" (click)="contactSupport(contact.type)">
+          <div class="contact-icon">
+            <svg *ngIf="contact.icon === 'mail'" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            
+            <svg *ngIf="contact.icon === 'phone'" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            
+            <svg *ngIf="contact.icon === 'phone-call'" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            
+            <svg *ngIf="contact.icon === 'message-circle'" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+          </div>
+          
+          <div class="contact-details">
+            <div class="contact-type">{{ contact.type }}</div>
+            <div class="contact-value">{{ contact.value }}</div>
+          </div>
+          
+          <div class="contact-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Important Disclaimers -->
+    <div class="section-card card disclaimer-section">
+      <h3>Important Medical Disclaimers</h3>
+      <div class="disclaimer-content">
+        <div class="disclaimer-item">
+          <div class="disclaimer-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="disclaimer-text">
+            <strong>Not a Medical Diagnosis:</strong> This AI system provides informational predictions only and should never be used as a substitute for professional medical diagnosis or treatment.
+          </div>
+        </div>
+        
+        <div class="disclaimer-item">
+          <div class="disclaimer-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <div class="disclaimer-text">
+            <strong>Emergency Situations:</strong> In case of medical emergencies, call emergency services immediately. Do not rely on this system for urgent medical situations.
+          </div>
+        </div>
+        
+        <div class="disclaimer-item">
+          <div class="disclaimer-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div class="disclaimer-text">
+            <strong>Consult Healthcare Professionals:</strong> Always consult with qualified healthcare providers for proper medical advice, diagnosis, and treatment plans.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
