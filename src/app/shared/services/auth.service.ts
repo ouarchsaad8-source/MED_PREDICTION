@@ -30,7 +30,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8082/api';
+  private apiUrl = 'http://localhost:8080/api';
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -39,7 +39,14 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
     if (token && user) {
-      this.currentUserSubject.next(JSON.parse(user));
+      try {
+        const parsedUser = JSON.parse(user);
+        this.currentUserSubject.next(parsedUser);
+      } catch (e) {
+        // If parsing fails, clear the invalid data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
     }
   }
 

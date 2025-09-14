@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,13 +11,16 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   registerForm: FormGroup;
   isLoading = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
@@ -41,19 +45,28 @@ export class RegisterComponent {
   onSubmit() {
     if (this.registerForm.valid) {
       this.isLoading = true;
+      this.errorMessage = '';
       
-      // Simulate API call
-      setTimeout(() => {
-        this.isLoading = false;
-        // Store user data in localStorage for demo
-        localStorage.setItem('currentUser', JSON.stringify({
-          id: 1,
-          name: this.registerForm.value.name,
-          email: this.registerForm.value.email,
-          avatar: 'assets/images/avatar.jpg'
-        }));
-        this.router.navigate(['/dashboard']);
-      }, 1500);
+      const formData = this.registerForm.value;
+      const registerData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password
+      };
+      
+      this.authService.register(registerData).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          // Navigate to dashboard after successful registration
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = 'Registration failed. Please try again.';
+          console.error('Registration error:', error);
+        }
+      });
     }
   }
 

@@ -11,6 +11,10 @@
       <h2>Welcome Back</h2>
       <p class="auth-subtitle">Sign in to your account</p>
       
+      <div class="alert alert-danger" *ngIf="errorMessage" role="alert">
+        {{ errorMessage }}
+      </div>
+      
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label class="form-label" for="email">Email Address</label>
